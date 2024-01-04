@@ -1,0 +1,40 @@
+{% extends 'shop/layouts/main.html' %}
+{% block title %}
+ collections
+{% endblock title%}
+{% block content %}
+{% load static %}
+<section class="container py-5 text-center container" style="margin-top:70px;">
+  <div class="row py-lg-5">
+    <div class="col-lg-6 col-md-8 mx-auto">
+      <h1 class="fw-light">Bestsellers</h1>
+      {% include 'shop/inc/message.html' %}
+      <p class="lead text-muted">our most popular products based on sales updated hourly</p>
+    </div>
+  </div>
+</section>   
+<section class="bg-light py-4 my-5">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <h4 class="mb-3">Categories</h4>
+        <hr style="border-color: rgb(33, 27, 27);">
+      </div>
+      {% for item in catagory %}
+          <div class="col-md-4 col-lg-3">
+            <div class="card my-3">
+              <img src="{{item.image.url}} " height="250px" width="100%" class="card-image-top object-fit-cover " alt="categories">
+              <a href="{% url 'collections' item.name %}">   
+                <div class="card-body"  style="background-color:rgba(96, 97, 97, 0.221);">
+                  <h5 class="card-title " style="color: black;">{{ item.name }}</h5>
+                  <p class="card-text" style="color: black;"> {{item.description}}</p>
+              </a>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+    </div>
+  </div>
+</section> 
+
+{% endblock content %}

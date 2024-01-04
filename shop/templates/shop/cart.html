@@ -1,0 +1,85 @@
+{% extends 'shop/layouts/main.html' %}
+{% block title %}
+ collections
+{% endblock title%}
+{% block content %}
+{% load static %}
+  
+<section class="bg-light py-4 my-5">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <h4 class="mb-3">Cart Items</h4>
+        <hr style="border-color: rgb(33, 27, 27);">
+      </div>
+      <div class="table-responsive">
+          <table class="table table-striped" id="productcollection">
+            <thead class="thead-dark">
+              <tr >
+                <th style="text-align: center; background-color: black; color: white;">ProductID</th>
+                <th style="text-align: center; background-color: black; color: white;">Pic</th>
+                <th style="text-align: center; background-color: black; color: white;">pro_name</th>
+                <th style="text-align: center; background-color: black; color: white;">Pr</th>
+                <th style="text-align: center; background-color: black; color: white;">Quantity</th>
+                <th style="text-align: center; background-color: black; color: white;">Amt</th>
+                <th style="text-align: center; background-color: black; color: white;"></th>
+              </tr>
+            </thead>
+          
+            {% for item in cart %}
+            <tr >
+                <td style="text-align: center;"> ID : {{item.product.id}} </td>
+                <td style="text-align: center;" ><img src="{{item.product.product_image.url}}" height="75px" alt="product image "></td>
+                <td > Name : {{item.product.name}}</td>
+                <td > Unit : {{item.product.selling_price | stringformat:'d'}} </td>
+                <td > Qty : {{item.product_qty}}</td>
+                <td > Rs :<span class="amt">{{item.total_cost | stringformat:'d'}} </span></td>
+                <td  style="text-align: center;"><a href="{% url 'remove_cart' item.id %}" onclick="return confirm('are you sure? to Remove')" class="btn btn-danger btn-sm"><i class="fa fa-trash"> </i> Remove</a></td>
+            </tr>
+            {% endfor %}
+             <tr>
+              <td colspan="7"></td>
+             </tr>
+            <tr >
+                <td colspan="4"></td>
+                <td style="font-size: 1.5rem; font-weight: bolder;text-align: center;">Total_Amount</td>
+                <td  style="font-size: 1.5rem;text-align: center;" id="net">0</td>
+                <td style="text-align: center;"> <button onclick="buyfunction()" class="btn btn-success d-block px-2 p-2" id="btncartbuy"><i class="fa fa-whatsapp " ></i> Buy-Now </button></td>
+            </tr>
+          </table>
+        </div>
+    </div>
+  </div>
+
+</section> 
+<script>
+   
+    const productcollection= document.getElementById('productcollection')
+    const nodes = document.querySelectorAll('.amt');
+    const arr = Array.from(nodes);
+    const res = arr.reduce((acc, curr)=>{
+        return acc+= Number(curr.textContent)
+    }, 0);
+    document.getElementById("net").innerHTML="Rupees : "+res;
+
+   
+    function buyfunction(){
+      
+      let removeremove = productcollection.innerText.replaceAll("Remove","  |-------|  ")
+      let finelpush= removeremove.replaceAll("ProductID"," ").replaceAll("Pic","").replaceAll("Quantity"," ")
+       .replaceAll("Amt"," ").replaceAll("pro_name"," ").replaceAll("Pr"," ").replaceAll('Buy-Now',"").replaceAll("ID" ," (ID) ")
+       .replaceAll("Name"," (Name) ").replaceAll("Unit","(Per Unit) ").replaceAll("Qty"," (Qty) ").replaceAll("Rs" ," (Unit*Qty) ")
+      console.log(productcollection.innerText.replaceAll("Remove",""));
+      let number ="+919080194557"
+            var url = "https://wa.me/"+ number +"?text="
+            + finelpush +"%20%20";
+            window.open(url,'_blank').focus();
+      
+         
+
+    }
+    
+    
+</script>
+
+{% endblock content %}
